@@ -1,6 +1,6 @@
 package br.com.hotmart.java.model;
 
-public class Projeto {
+public class Project {
 
     int id;
     String nome;
