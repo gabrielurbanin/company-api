@@ -1,15 +1,21 @@
 package br.com.hotmart.java.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "adress")
 public class Adress {
 
-    int id;
-    String country;
-    String state;
-    String city;
-    String street;
-    String adressCode;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String country;
+    private String state;
+    private String city;
+    private String street;
+    private String adressCode;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -31,5 +37,29 @@ public class Adress {
 
     public String getAdressCode() {
         return adressCode;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setAdressCode(String adressCode) {
+        this.adressCode = adressCode;
     }
 }

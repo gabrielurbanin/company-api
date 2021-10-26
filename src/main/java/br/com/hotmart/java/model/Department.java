@@ -1,11 +1,18 @@
 package br.com.hotmart.java.model;
 
-public class Department {
-    int id;
-    String name;
-    int number;
+import javax.persistence.*;
 
-    public int getId() {
+@Entity
+@Table(name = "department")
+public class Department {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+    String name;
+    Integer number;
+
+    public Integer getId() {
         return id;
     }
 
@@ -13,7 +20,7 @@ public class Department {
         return name;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 }
