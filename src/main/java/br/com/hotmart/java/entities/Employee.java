@@ -29,8 +29,16 @@ public class Employee {
     private Integer gender;
 
     @OneToOne
+    @JoinColumn(
+            name = "adress_id",
+            referencedColumnName = "id"
+    )
     private Adress adress;
 
     @OneToOne
+    @JoinColumn(
+            name = "supervisor_id",
+            referencedColumnName = "id"
+    )
     private Employee supervisor;
 }
