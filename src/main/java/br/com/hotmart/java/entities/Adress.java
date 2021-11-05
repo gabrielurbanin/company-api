@@ -1,5 +1,6 @@
 package br.com.hotmart.java.entities;
 
+import br.com.hotmart.java.controllers.forms.AdressForm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,20 @@ public class Adress {
     private String street;
 
     private String adressCode;
+
+    public Adress(AdressForm form) {
+        this.country = form.getCountry();
+        this.state = form.getState();
+        this.city = form.getCity();
+        this.street = form.getStreet();
+        this.adressCode = form.getAdressCode();
+    }
+
+    public void update(AdressForm form) {
+        this.country = form.getCountry();
+        this.state = form.getState();
+        this.city = form.getCity();
+        this.street = form.getStreet();
+        this.adressCode = form.getAdressCode();
+    }
 }

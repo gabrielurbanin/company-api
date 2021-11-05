@@ -1,11 +1,12 @@
 package br.com.hotmart.java.entities;
 
+import br.com.hotmart.java.controllers.forms.ProjectForm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,4 +27,19 @@ public class Project {
             referencedColumnName = "id"
     )
     private Department department;
+
+    @ManyToMany(mappedBy = "projects")
+    private List<Employee> employees;
+
+    public Project(ProjectForm form) {
+        this.name = form.getName();
+        this.department = form.getDepartment();
+        this.employees = form.getEmployees();
+    }
+
+    public void update(ProjectForm form) {
+        this.name = form.getName();
+        this.department = form.getDepartment();
+        this.employees = form.getEmployees();
+    }
 }

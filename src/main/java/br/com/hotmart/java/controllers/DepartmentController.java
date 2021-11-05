@@ -1,43 +1,47 @@
 package br.com.hotmart.java.controllers;
 
-import br.com.hotmart.java.entities.Department;
+import br.com.hotmart.java.controllers.forms.DepartmentForm;
+import br.com.hotmart.java.controllers.vo.DepartmentVO;
 import br.com.hotmart.java.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController()
-@RequestMapping("/company/rest/v1/departments")
+@RestController
+@RequestMapping("/rest/v1/departments")
 public class DepartmentController {
 
     @Autowired
     private DepartmentService departmentService;
 
-    @PostMapping("/add")
-    public Department add(@RequestBody Department newDepartment) {
-        return departmentService.saveDepartment(newDepartment);
+    @GetMapping
+    public ResponseEntity<List<DepartmentVO>> getAll() {
+        return ResponseEntity.ok().body(departmentService.getAll());
     }
 
-    @GetMapping("/getAll")
-    public List<Department> getAll() {
-        return departmentService.getAllDepartments();
+    @PostMapping
+    public ResponseEntity<Void> save(@RequestBody DepartmentForm form) {
+        departmentService.save(form);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/getById/{departmentId}")
-    public Department getById(@PathVariable Long departmentId) {
-        return departmentService.getDepartmentById(departmentId);
+    @GetMapping("/{id}")
+    public ResponseEntity<DepartmentVO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(departmentService.getById(id));
     }
 
-    @GetMapping("/update/{departmentId}")
-    public String update(@PathVariable Long departmentId, @RequestBody Department updatedDepartment) {
-        return departmentService.updateDepartment(departmentId, updatedDepartment);
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody DepartmentForm form) {
+        departmentService.update(id, form);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/delete/{departmentId}")
-    public String delete(@PathVariable Long departmentId) {
-        return departmentService.deleteDepartment(departmentId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        departmentService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
