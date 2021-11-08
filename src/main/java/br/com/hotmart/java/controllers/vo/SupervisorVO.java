@@ -1,4 +1,4 @@
-package br.com.hotmart.java.controllers.forms;
+package br.com.hotmart.java.controllers.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectForm {
+public class SupervisorVO {
 
-    private String name;
-
-    private Long departmentId;
+    private Long employeeId;
 }

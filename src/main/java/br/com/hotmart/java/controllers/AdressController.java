@@ -23,7 +23,7 @@ public class AdressController {
 
     @PostMapping
     public ResponseEntity<Void> add(@RequestBody AdressForm form) {
-        adressService.saveAdress(form);
+        adressService.save(form);
         return ResponseEntity.noContent().build();
     }
 

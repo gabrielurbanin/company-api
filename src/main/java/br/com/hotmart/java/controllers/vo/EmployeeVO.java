@@ -1,8 +1,6 @@
 package br.com.hotmart.java.controllers.vo;
 
-import br.com.hotmart.java.entities.Adress;
 import br.com.hotmart.java.entities.Employee;
-import br.com.hotmart.java.entities.Project;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -25,19 +24,19 @@ public class EmployeeVO {
 
     private Integer gender;
 
-    private Adress adress;
+    private AdressVO adress;
 
-    private Employee supervisor;
+    private EmployeeVO supervisor;
 
-    private List<Project> projects;
+    private List<ProjectVO> projects;
 
     public EmployeeVO(Employee employee) {
         this.name = employee.getName();
         this.cpf = employee.getCpf();
         this.date = employee.getDate();
         this.gender = employee.getGender();
-        this.adress = employee.getAdress();
-        this.supervisor = employee.getSupervisor();
-        this.projects = employee.getProjects();
+        this.adress = new AdressVO(employee.getAdress());
+        this.supervisor = new EmployeeVO(employee.getSupervisor());
+        this.projects = employee.getProjects().stream().map(ProjectVO::new).collect(Collectors.toList());
     }
 }

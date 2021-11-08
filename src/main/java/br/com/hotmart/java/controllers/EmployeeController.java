@@ -35,13 +35,18 @@ public class EmployeeController {
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody EmployeeForm form) {
         employeeService.update(id,form);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/{supervisorId}")
+    public ResponseEntity<Void> updateSupervisor(@PathVariable Long id, @PathVariable Long supervisorId) {
+        employeeService.updateSupervisor(id, supervisorId);
+        return ResponseEntity.accepted().build();
     }
 
     @DeleteMapping("/{id}")

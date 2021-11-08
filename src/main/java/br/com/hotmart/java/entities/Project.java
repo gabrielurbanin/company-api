@@ -33,13 +33,9 @@ public class Project {
 
     public Project(ProjectForm form) {
         this.name = form.getName();
-        this.department = form.getDepartment();
-        this.employees = form.getEmployees();
     }
 
     public void update(ProjectForm form) {
         this.name = form.getName();
-        this.department = form.getDepartment();
-        this.employees = form.getEmployees();
     }
 }

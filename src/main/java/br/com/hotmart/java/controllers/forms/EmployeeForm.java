@@ -1,8 +1,5 @@
 package br.com.hotmart.java.controllers.forms;
 
-import br.com.hotmart.java.entities.Adress;
-import br.com.hotmart.java.entities.Employee;
-import br.com.hotmart.java.entities.Project;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +22,9 @@ public class EmployeeForm {
 
     private Integer gender;
 
-    private Long adressId;
+    private AdressForm adressForm;
 
     private Long supervisorId;
 
-    private List<Project> projects;
+    private List<Long> projectId;
 }

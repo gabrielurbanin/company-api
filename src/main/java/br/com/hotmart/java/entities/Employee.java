@@ -37,19 +37,22 @@ public class Employee {
 
     private Integer gender;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "adress_id",
             referencedColumnName = "id"
     )
     private Adress adress;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(
-            name = "supervisor_id",
+            name = "supervisorId",
             referencedColumnName = "id"
     )
     private Employee supervisor;
+
+    @OneToMany(mappedBy = "supervisor")
+    private List<Employee> subordinates;
 
     @ManyToMany
     @JoinTable(
@@ -70,17 +73,13 @@ public class Employee {
         this.cpf = form.getCpf();
         this.date = form.getDate();
         this.gender = form.getGender();
-        this.projects = form.getProjects();
     }
-
 
     public void update(EmployeeForm form) {
         this.name = form.getName();
         this.cpf = form.getCpf();
         this.date = form.getDate();
         this.gender = form.getGender();
-//        this.adress = form.getAdress();
-//        this.supervisor = form.getSupervisor();
-        this.projects = form.getProjects();
     }
+
 }

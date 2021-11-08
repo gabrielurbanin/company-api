@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectForm {
+public class SupervisorForm {
 
-    private String name;
-
-    private Long departmentId;
+    private Long employeeId;
 }
