@@ -20,12 +20,6 @@ public class EmployeeVO {
 
     private String name;
 
-    private String cpf;
-
-    private Integer gender;
-
-    private AddressVO address;
-
     private SupervisorVO supervisor;
 
     private List<ProjectVO> projects;
@@ -33,9 +27,6 @@ public class EmployeeVO {
     public EmployeeVO(Employee employee) {
         this.id = employee.getId();
         this.name = employee.getName();
-        this.cpf = employee.getCpf();
-        this.gender = employee.getGender();
-        this.address = new AddressVO(employee.getAddress());
 
         this.supervisor = Optional.ofNullable(employee.getSupervisor())
                 .map(SupervisorVO::new).orElse(null);

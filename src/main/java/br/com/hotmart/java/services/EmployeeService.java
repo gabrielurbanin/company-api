@@ -59,4 +59,8 @@ public class EmployeeService {
     public void delete(Long id) {
         employeeRepository.delete(findById(id));
     }
+
+    public EmployeeVO findByName(String name) {
+        return new EmployeeVO(employeeRepository.findByName(name));
+    }
 }

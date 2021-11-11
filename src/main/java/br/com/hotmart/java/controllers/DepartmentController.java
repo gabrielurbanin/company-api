@@ -6,7 +6,9 @@ import br.com.hotmart.java.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,8 +24,12 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public ResponseEntity<DepartmentVO> save(@RequestBody DepartmentForm form) {
-        return ResponseEntity.ok().body(departmentService.save(form));
+    public ResponseEntity<DepartmentVO> save(@RequestBody DepartmentForm form, UriComponentsBuilder uriBuilder) {
+
+        DepartmentVO savedDepartment = departmentService.save(form);
+        URI uri = uriBuilder.path("/departments/{id}").buildAndExpand(savedDepartment.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(savedDepartment);
     }
 
     @GetMapping("/{id}")

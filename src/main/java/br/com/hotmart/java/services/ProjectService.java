@@ -60,9 +60,7 @@ public class ProjectService {
 
     public ProjectVO addEmployee(Long id, Long employeeId) {
         Project existingProject = findById(id);
-        List<Employee> employeeList = existingProject.getEmployees();
-        employeeList.add(employeeService.findById(employeeId));
-        existingProject.setEmployees(employeeList);
+        existingProject.getEmployees().add(employeeService.findById(employeeId));
 
         return new ProjectVO(projectRepository.save(existingProject));
     }

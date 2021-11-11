@@ -6,7 +6,9 @@ import br.com.hotmart.java.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,8 +24,13 @@ public class AddressController {
     }
 
     @PostMapping
-    public ResponseEntity<AddressVO> save(@RequestBody AddressForm form) {
-        return ResponseEntity.ok().body(addressService.save(form));
+    public ResponseEntity<AddressVO> save(@RequestBody AddressForm form, UriComponentsBuilder uriBuilder) {
+
+        AddressVO savedAddress = addressService.save(form);
+        URI uri = uriBuilder.path("/departments/{id}").buildAndExpand(savedAddress.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(savedAddress);
+
     }
 
     @GetMapping("/{id}")

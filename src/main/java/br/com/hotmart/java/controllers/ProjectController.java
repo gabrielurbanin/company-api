@@ -6,7 +6,9 @@ import br.com.hotmart.java.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,8 +24,13 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<ProjectVO> save(@RequestBody ProjectForm form) {
-        return ResponseEntity.ok().body(projectService.save(form));
+    public ResponseEntity<ProjectVO> save(@RequestBody ProjectForm form, UriComponentsBuilder uriBuilder) {
+
+        ProjectVO savedProject = projectService.save(form);
+        URI uri = uriBuilder.path("/departments/{id}").buildAndExpand(savedProject.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(savedProject);
+
     }
 
     @GetMapping("/{id}")

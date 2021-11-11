@@ -5,10 +5,11 @@ import br.com.hotmart.java.controllers.vo.EmployeeVO;
 import br.com.hotmart.java.exception.ResourceNotFoundException;
 import br.com.hotmart.java.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.mustache.MustacheResourceTemplateLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,8 +25,12 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeVO> save(@RequestBody EmployeeForm form) {
-        return ResponseEntity.ok().body(employeeService.save(form));
+    public ResponseEntity<EmployeeVO> save(@RequestBody EmployeeForm form, UriComponentsBuilder uriBuilder) {
+
+        EmployeeVO savedEmployee = employeeService.save(form);
+        URI uri = uriBuilder.path("/departments/{id}").buildAndExpand(savedEmployee.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(savedEmployee);
     }
 
     @GetMapping("/{id}")
@@ -35,6 +40,11 @@ public class EmployeeController {
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<EmployeeVO> findByName(@RequestParam String name) {
+        return ResponseEntity.ok().body(employeeService.findByName(name));
     }
 
     @PutMapping("/{id}")
