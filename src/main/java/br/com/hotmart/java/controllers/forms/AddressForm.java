@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdressForm {
+public class AddressForm {
 
     private String country;
 
@@ -19,5 +19,5 @@ public class AdressForm {
 
     private String street;
 
-    private String adressCode;
+    private String addressCode;
 }

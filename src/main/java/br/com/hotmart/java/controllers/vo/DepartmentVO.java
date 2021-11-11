@@ -8,13 +8,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DepartmentVO {
+    private Long id;
 
     private String name;
 
-    private Integer number;
-
     public DepartmentVO(Department department) {
+        this.id = department.getId();
         this.name = department.getName();
-        this.number = department.getNumber();
     }
 }

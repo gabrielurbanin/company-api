@@ -18,53 +18,36 @@ public class DepartmentService {
     private DepartmentRepository departmentRepository;
 
     public List<DepartmentVO> getAll() {
-        return departmentRepository.findAll().stream().map(DepartmentVO::new).collect(Collectors.toList());
+        return departmentRepository.findAll().stream()
+                .map(DepartmentVO::new).collect(Collectors.toList());
     }
 
-    public void save(DepartmentForm form) {
+    public DepartmentVO save(DepartmentForm form) {
         Department newDepartment = new Department(form);
-        departmentRepository.save(newDepartment);
-    }
-
-    public DepartmentVO getById(Long id) {
-        Department department = departmentRepository.findById(id).orElse(null);
-
-        if (department == null) {
-            throw new ResourceNotFoundException("id", "Department does not exist!");
-        }
-
-        return new DepartmentVO(department);
+        return new DepartmentVO(departmentRepository.save(newDepartment));
     }
 
     public Department findById(Long id) {
-        Department department = departmentRepository.findById(id).orElse(null);
-
-        if (department == null) {
-            throw new ResourceNotFoundException("id", "Department does not exist!");
-        }
+        Department department = departmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("id", "Department does not exist!"));
 
         return department;
     }
 
-    public void update(Long id, DepartmentForm form) {
-        Department existingDepartment = departmentRepository.findById(id).orElse(null);
+    public DepartmentVO getById(Long id) {
+        return new DepartmentVO(findById(id));
+    }
 
-        if (existingDepartment == null) {
-            throw new ResourceNotFoundException("id", "Department does not exist!");
-        }
 
+    public DepartmentVO update(Long id, DepartmentForm form) {
+        Department existingDepartment = findById(id);
         existingDepartment.update(form);
-        departmentRepository.save(existingDepartment);
+
+        return new DepartmentVO(departmentRepository.save(existingDepartment));
     }
 
     public void delete(Long id) {
-        Department department = departmentRepository.findById(id).orElse(null);
-
-        if (department == null) {
-            throw new ResourceNotFoundException("id", "Department does not exist!");
-        }
-
-        departmentRepository.deleteById(id);
+        departmentRepository.delete(findById(id));
     }
 
 }

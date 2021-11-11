@@ -2,18 +2,15 @@ package br.com.hotmart.java.entities;
 
 
 import br.com.hotmart.java.controllers.forms.DepartmentForm;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
-@Data
+
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Entity
 @Table(
         name = "department",
         uniqueConstraints = @UniqueConstraint(

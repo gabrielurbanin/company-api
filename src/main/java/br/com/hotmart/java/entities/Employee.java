@@ -1,15 +1,13 @@
 package br.com.hotmart.java.entities;
 
 import br.com.hotmart.java.controllers.forms.EmployeeForm;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -33,7 +31,7 @@ public class Employee {
     )
     private String cpf;
 
-    private LocalDate date;
+    private LocalDate date = LocalDate.now();
 
     private Integer gender;
 
@@ -42,7 +40,7 @@ public class Employee {
             name = "adress_id",
             referencedColumnName = "id"
     )
-    private Adress adress;
+    private Address address;
 
     @ManyToOne
     @JoinColumn(
@@ -54,31 +52,18 @@ public class Employee {
     @OneToMany(mappedBy = "supervisor")
     private List<Employee> subordinates;
 
-    @ManyToMany
-    @JoinTable(
-            name = "employee_project",
-            joinColumns = {@JoinColumn(
-                    name = "employee_id",
-                    referencedColumnName = "id"
-            )},
-            inverseJoinColumns = {@JoinColumn(
-                    name = "project_id",
-                    referencedColumnName = "id"
-            )}
-    )
+    @ManyToMany(mappedBy = "employees")
     private List<Project> projects;
 
     public Employee(EmployeeForm form) {
         this.name = form.getName();
         this.cpf = form.getCpf();
-        this.date = form.getDate();
         this.gender = form.getGender();
     }
 
     public void update(EmployeeForm form) {
         this.name = form.getName();
         this.cpf = form.getCpf();
-        this.date = form.getDate();
         this.gender = form.getGender();
     }
 

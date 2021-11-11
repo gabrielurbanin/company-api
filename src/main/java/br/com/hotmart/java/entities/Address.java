@@ -1,18 +1,17 @@
 package br.com.hotmart.java.entities;
 
-import br.com.hotmart.java.controllers.forms.AdressForm;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import br.com.hotmart.java.controllers.forms.AddressForm;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
-@Data
+
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "adress")
-public class Adress {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,21 +25,21 @@ public class Adress {
 
     private String street;
 
-    private String adressCode;
+    private String addressCode;
 
-    public Adress(AdressForm form) {
+    public Address(AddressForm form) {
         this.country = form.getCountry();
         this.state = form.getState();
         this.city = form.getCity();
         this.street = form.getStreet();
-        this.adressCode = form.getAdressCode();
+        this.addressCode = form.getAddressCode();
     }
 
-    public void update(AdressForm form) {
+    public void update(AddressForm form) {
         this.country = form.getCountry();
         this.state = form.getState();
         this.city = form.getCity();
         this.street = form.getStreet();
-        this.adressCode = form.getAdressCode();
+        this.addressCode = form.getAddressCode();
     }
 }

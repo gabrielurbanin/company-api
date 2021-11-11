@@ -1,17 +1,16 @@
 package br.com.hotmart.java.entities;
 
 import br.com.hotmart.java.controllers.forms.ProjectForm;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Data
+
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "project")
 public class Project {
 
@@ -28,7 +27,18 @@ public class Project {
     )
     private Department department;
 
-    @ManyToMany(mappedBy = "projects")
+    @ManyToMany
+    @JoinTable(
+            name = "project_employee",
+            joinColumns = {@JoinColumn(
+                    name = "project_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "employee_id",
+                    referencedColumnName = "id"
+            )}
+    )
     private List<Employee> employees;
 
     public Project(ProjectForm form) {

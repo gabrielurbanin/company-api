@@ -22,9 +22,8 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody ProjectForm form) {
-        projectService.save(form);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ProjectVO> save(@RequestBody ProjectForm form) {
+        return ResponseEntity.ok().body(projectService.save(form));
     }
 
     @GetMapping("/{id}")
@@ -33,9 +32,13 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody ProjectForm form) {
-        projectService.update(id, form);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ProjectVO> update(@PathVariable Long id, @RequestBody ProjectForm form) {
+        return ResponseEntity.ok().body(projectService.update(id, form));
+    }
+
+    @PatchMapping("/{id}/employee/{employeeId}")
+    public ResponseEntity<ProjectVO> addEmployee(@PathVariable Long id, @PathVariable Long employeeId) {
+        return ResponseEntity.ok().body(projectService.addEmployee(id, employeeId));
     }
 
     @DeleteMapping("/{id}")
@@ -43,5 +46,7 @@ public class ProjectController {
         projectService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+
 
 }

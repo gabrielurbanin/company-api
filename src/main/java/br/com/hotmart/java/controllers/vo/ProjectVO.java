@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -15,16 +17,27 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectVO {
+    private Long id;
 
     private String name;
 
     private DepartmentVO department;
 
-    private List<Long> employeeId;
+    private List<Long> employeesId;
 
     public ProjectVO(Project project) {
+        this.id = project.getId();
         this.name = project.getName();
-        this.department = new DepartmentVO(project.getDepartment());
-        this.employeeId = project.getEmployees().stream().map(Employee::getId).collect(Collectors.toList());
+
+        this.department = Optional.ofNullable(project.getDepartment())
+                .map(DepartmentVO::new).orElse(null);
+
+        if (project.getEmployees() == null)
+            this.employeesId = Collections.emptyList();
+        else {
+            this.employeesId =  project.getEmployees().stream()
+                    .map(Employee::getId).collect(Collectors.toList());
+        }
+
     }
 }

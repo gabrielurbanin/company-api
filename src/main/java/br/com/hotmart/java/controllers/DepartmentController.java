@@ -22,9 +22,8 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody DepartmentForm form) {
-        departmentService.save(form);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<DepartmentVO> save(@RequestBody DepartmentForm form) {
+        return ResponseEntity.ok().body(departmentService.save(form));
     }
 
     @GetMapping("/{id}")
@@ -33,9 +32,8 @@ public class DepartmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody DepartmentForm form) {
-        departmentService.update(id, form);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<DepartmentVO> update(@PathVariable Long id, @RequestBody DepartmentForm form) {
+        return ResponseEntity.ok().body(departmentService.update(id, form));
     }
 
     @DeleteMapping("/{id}")

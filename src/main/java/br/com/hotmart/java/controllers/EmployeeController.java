@@ -5,6 +5,7 @@ import br.com.hotmart.java.controllers.vo.EmployeeVO;
 import br.com.hotmart.java.exception.ResourceNotFoundException;
 import br.com.hotmart.java.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.mustache.MustacheResourceTemplateLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +24,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody EmployeeForm form) {
-        employeeService.save(form);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<EmployeeVO> save(@RequestBody EmployeeForm form) {
+        return ResponseEntity.ok().body(employeeService.save(form));
     }
 
     @GetMapping("/{id}")
@@ -38,15 +38,13 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody EmployeeForm form) {
-        employeeService.update(id,form);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<EmployeeVO> update(@PathVariable Long id, @RequestBody EmployeeForm form) {
+        return ResponseEntity.ok().body(employeeService.update(id,form));
     }
 
-    @PutMapping("/{id}/{supervisorId}")
-    public ResponseEntity<Void> updateSupervisor(@PathVariable Long id, @PathVariable Long supervisorId) {
-        employeeService.updateSupervisor(id, supervisorId);
-        return ResponseEntity.accepted().build();
+    @PatchMapping("/{id}/supervisor/{supervisorId}")
+    public ResponseEntity<EmployeeVO> updateSupervisor(@PathVariable Long id, @PathVariable Long supervisorId) {
+        return ResponseEntity.accepted().body(employeeService.updateSupervisor(id, supervisorId));
     }
 
     @DeleteMapping("/{id}")

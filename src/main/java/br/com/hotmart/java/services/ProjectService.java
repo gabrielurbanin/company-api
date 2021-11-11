@@ -2,6 +2,7 @@ package br.com.hotmart.java.services;
 
 import br.com.hotmart.java.controllers.forms.ProjectForm;
 import br.com.hotmart.java.controllers.vo.ProjectVO;
+import br.com.hotmart.java.entities.Employee;
 import br.com.hotmart.java.entities.Project;
 import br.com.hotmart.java.exception.ResourceNotFoundException;
 import br.com.hotmart.java.repositories.ProjectRepository;
@@ -20,49 +21,49 @@ public class ProjectService {
     @Autowired
     private DepartmentService departmentService;
 
+    @Autowired
+    private EmployeeService employeeService;
+
     public List<ProjectVO> getAll() {
-        return projectRepository.findAll().stream().map(ProjectVO::new).collect(Collectors.toList());
+        return projectRepository.findAll().stream()
+                .map(ProjectVO::new).collect(Collectors.toList());
     }
 
-    public void save(ProjectForm form) {
+    public ProjectVO save(ProjectForm form) {
         Project newProject = new Project(form);
-
         newProject.setDepartment(departmentService.findById(form.getDepartmentId()));
 
-        projectRepository.save(newProject);
+        return new ProjectVO(projectRepository.save(newProject));
+    }
+
+    public Project findById(Long id) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("id", "Project does not exist!"));
+
+        return project;
     }
 
     public ProjectVO getById(Long id) {
-        Project project = projectRepository.findById(id).orElse(null);
-
-        if (project == null) {
-            throw new ResourceNotFoundException("id", "Project does not exist!");
-        }
-
-        return new ProjectVO(project);
+        return new ProjectVO(findById(id));
     }
 
-    public void update(Long id, ProjectForm form) {
-        Project existingProject = projectRepository.findById(id).orElse(null);
-
-        if (existingProject == null) {
-            throw new ResourceNotFoundException("id", "Project does not exist!");
-        }
-
+    public ProjectVO update(Long id, ProjectForm form) {
+        Project existingProject = findById(id);
         existingProject.update(form);
-        projectRepository.save(existingProject);
+
+        return new ProjectVO(projectRepository.save(existingProject));
     }
 
     public void delete(Long id) {
-        projectRepository.deleteById(id);
+        projectRepository.delete(findById(id));
     }
 
-    public List<Project> findAllById(List<Long> projectId) {
-        try {
-            return projectRepository.findAllById(projectId);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("id", "Was not able to fetch all ids!");
-        }
+    public ProjectVO addEmployee(Long id, Long employeeId) {
+        Project existingProject = findById(id);
+        List<Employee> employeeList = existingProject.getEmployees();
+        employeeList.add(employeeService.findById(employeeId));
+        existingProject.setEmployees(employeeList);
 
+        return new ProjectVO(projectRepository.save(existingProject));
     }
 }

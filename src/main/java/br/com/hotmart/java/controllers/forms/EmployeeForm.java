@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -18,13 +16,8 @@ public class EmployeeForm {
 
     private String cpf;
 
-    private LocalDate date;
-
     private Integer gender;
 
-    private AdressForm adressForm;
+    private AddressForm addressForm;
 
-    private Long supervisorId;
-
-    private List<Long> projectId;
 }

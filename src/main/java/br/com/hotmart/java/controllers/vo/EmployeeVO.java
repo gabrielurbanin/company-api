@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -15,28 +16,35 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeVO {
+    private Long id;
 
     private String name;
 
     private String cpf;
 
-    private LocalDate date;
-
     private Integer gender;
 
-    private AdressVO adress;
+    private AddressVO address;
 
-    private EmployeeVO supervisor;
+    private SupervisorVO supervisor;
 
     private List<ProjectVO> projects;
 
     public EmployeeVO(Employee employee) {
+        this.id = employee.getId();
         this.name = employee.getName();
         this.cpf = employee.getCpf();
-        this.date = employee.getDate();
         this.gender = employee.getGender();
-        this.adress = new AdressVO(employee.getAdress());
-        this.supervisor = new EmployeeVO(employee.getSupervisor());
-        this.projects = employee.getProjects().stream().map(ProjectVO::new).collect(Collectors.toList());
+        this.address = new AddressVO(employee.getAddress());
+
+        this.supervisor = Optional.ofNullable(employee.getSupervisor())
+                .map(SupervisorVO::new).orElse(null);
+
+        if (employee.getProjects() == null)
+            this.projects = Collections.emptyList();
+        else {
+            this.projects = employee.getProjects().stream()
+                    .map(ProjectVO::new).collect(Collectors.toList());
+        }
     }
 }
