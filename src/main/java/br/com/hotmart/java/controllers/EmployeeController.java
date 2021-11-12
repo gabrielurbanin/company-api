@@ -2,7 +2,7 @@ package br.com.hotmart.java.controllers;
 
 import br.com.hotmart.java.controllers.forms.EmployeeForm;
 import br.com.hotmart.java.controllers.vo.EmployeeVO;
-import br.com.hotmart.java.exception.ResourceNotFoundException;
+import br.com.hotmart.java.controllers.vo.ProjectVO;
 import br.com.hotmart.java.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,16 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping
-    public ResponseEntity<List<EmployeeVO>> getAll() {
+    public ResponseEntity<List<EmployeeVO>> getAll(@RequestParam String name) {
+        if (name != null) {
+            return ResponseEntity.ok().body(employeeService.getAllByName(name));
+        }
+
         return ResponseEntity.ok().body(employeeService.getAll());
     }
 
     @PostMapping
     public ResponseEntity<EmployeeVO> save(@RequestBody EmployeeForm form, UriComponentsBuilder uriBuilder) {
-
         EmployeeVO savedEmployee = employeeService.save(form);
         URI uri = uriBuilder.path("/departments/{id}").buildAndExpand(savedEmployee.getId()).toUri();
 
@@ -35,16 +38,17 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeVO> getById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok().body(employeeService.getById(id));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok().body(employeeService.getById(id));
     }
 
-    @GetMapping("/filter")
-    public ResponseEntity<EmployeeVO> findByName(@RequestParam String name) {
-        return ResponseEntity.ok().body(employeeService.findByName(name));
+    @GetMapping("/{id}/subordinates")
+    public ResponseEntity<List<EmployeeVO>> getAllSubordinates(@PathVariable Long id) {
+        return ResponseEntity.ok().body(employeeService.getAllSubordinates(id));
+    }
+
+    @GetMapping("/{id}/projects")
+    public ResponseEntity<List<ProjectVO>> getAllProjects(@PathVariable Long id) {
+        return ResponseEntity.ok().body(employeeService.getAllProjects(id));
     }
 
     @PutMapping("/{id}")
@@ -52,7 +56,7 @@ public class EmployeeController {
         return ResponseEntity.ok().body(employeeService.update(id,form));
     }
 
-    @PatchMapping("/{id}/supervisor/{supervisorId}")
+    @PatchMapping("/{id}/supervisors/{supervisorId}")
     public ResponseEntity<EmployeeVO> updateSupervisor(@PathVariable Long id, @PathVariable Long supervisorId) {
         return ResponseEntity.accepted().body(employeeService.updateSupervisor(id, supervisorId));
     }

@@ -2,6 +2,7 @@ package br.com.hotmart.java.controllers;
 
 import br.com.hotmart.java.controllers.forms.DepartmentForm;
 import br.com.hotmart.java.controllers.vo.DepartmentVO;
+import br.com.hotmart.java.controllers.vo.EmployeeVO;
 import br.com.hotmart.java.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,6 @@ public class DepartmentController {
 
     @PostMapping
     public ResponseEntity<DepartmentVO> save(@RequestBody DepartmentForm form, UriComponentsBuilder uriBuilder) {
-
         DepartmentVO savedDepartment = departmentService.save(form);
         URI uri = uriBuilder.path("/departments/{id}").buildAndExpand(savedDepartment.getId()).toUri();
 
@@ -35,6 +35,11 @@ public class DepartmentController {
     @GetMapping("/{id}")
     public ResponseEntity<DepartmentVO> getById(@PathVariable Long id) {
         return ResponseEntity.ok().body(departmentService.getById(id));
+    }
+
+    @GetMapping("/{id}/employees")
+    public ResponseEntity<List<EmployeeVO>> getAllEmployees(@PathVariable Long id) {
+        return ResponseEntity.ok().body(departmentService.getAllEmployees(id));
     }
 
     @PutMapping("/{id}")

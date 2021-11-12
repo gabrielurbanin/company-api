@@ -25,12 +25,10 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<ProjectVO> save(@RequestBody ProjectForm form, UriComponentsBuilder uriBuilder) {
-
         ProjectVO savedProject = projectService.save(form);
         URI uri = uriBuilder.path("/departments/{id}").buildAndExpand(savedProject.getId()).toUri();
 
         return ResponseEntity.created(uri).body(savedProject);
-
     }
 
     @GetMapping("/{id}")
@@ -43,7 +41,7 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.update(id, form));
     }
 
-    @PatchMapping("/{id}/employee/{employeeId}")
+    @PatchMapping("/{id}/employees/{employeeId}")
     public ResponseEntity<ProjectVO> addEmployee(@PathVariable Long id, @PathVariable Long employeeId) {
         return ResponseEntity.ok().body(projectService.addEmployee(id, employeeId));
     }

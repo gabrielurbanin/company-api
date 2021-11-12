@@ -2,6 +2,7 @@ package br.com.hotmart.java.services;
 
 import br.com.hotmart.java.controllers.forms.EmployeeForm;
 import br.com.hotmart.java.controllers.vo.EmployeeVO;
+import br.com.hotmart.java.controllers.vo.ProjectVO;
 import br.com.hotmart.java.entities.Address;
 import br.com.hotmart.java.entities.Employee;
 import br.com.hotmart.java.exception.ResourceNotFoundException;
@@ -17,6 +18,9 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private ProjectService projectService;
 
     public List<EmployeeVO> getAll() {
         return employeeRepository.findAll().stream()
@@ -42,6 +46,20 @@ public class EmployeeService {
         return new EmployeeVO(findById(id));
     }
 
+    public List<EmployeeVO> getAllByName(String name) {
+        return employeeRepository.findAllByName(name)
+                .stream().map(EmployeeVO::new).collect(Collectors.toList());
+    }
+
+    public List<EmployeeVO> getAllSubordinates(Long id) {
+        return employeeRepository.findAllBySupervisorId(id)
+                .stream().map(EmployeeVO::new).collect(Collectors.toList());
+    }
+
+    public List<ProjectVO> getAllProjects(Long id) {
+        return projectService.getAllProjectsFromEmployee(id);
+    }
+
     public EmployeeVO update(Long id, EmployeeForm form) {
         Employee existingEmployee = findById(id);
         existingEmployee.update(form);
@@ -60,7 +78,8 @@ public class EmployeeService {
         employeeRepository.delete(findById(id));
     }
 
-    public EmployeeVO findByName(String name) {
-        return new EmployeeVO(employeeRepository.findByName(name));
+    public List<EmployeeVO> getAllEmployeesFromDepartment(Long id) {
+        return employeeRepository.findAllByProjectsDepartmentId(id)
+                .stream().map(EmployeeVO::new).collect(Collectors.toList());
     }
 }

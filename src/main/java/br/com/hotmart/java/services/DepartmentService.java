@@ -2,6 +2,7 @@ package br.com.hotmart.java.services;
 
 import br.com.hotmart.java.controllers.forms.DepartmentForm;
 import br.com.hotmart.java.controllers.vo.DepartmentVO;
+import br.com.hotmart.java.controllers.vo.EmployeeVO;
 import br.com.hotmart.java.entities.Department;
 import br.com.hotmart.java.exception.ResourceNotFoundException;
 import br.com.hotmart.java.repositories.DepartmentRepository;
@@ -16,6 +17,9 @@ public class DepartmentService {
 
     @Autowired
     private DepartmentRepository departmentRepository;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     public List<DepartmentVO> getAll() {
         return departmentRepository.findAll().stream()
@@ -38,6 +42,9 @@ public class DepartmentService {
         return new DepartmentVO(findById(id));
     }
 
+    public List<EmployeeVO> getAllEmployees(Long id) {
+        return employeeService.getAllEmployeesFromDepartment(id);
+    }
 
     public DepartmentVO update(Long id, DepartmentForm form) {
         Department existingDepartment = findById(id);
@@ -49,5 +56,4 @@ public class DepartmentService {
     public void delete(Long id) {
         departmentRepository.delete(findById(id));
     }
-
 }

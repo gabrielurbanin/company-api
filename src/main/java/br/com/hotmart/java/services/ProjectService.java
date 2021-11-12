@@ -2,7 +2,6 @@ package br.com.hotmart.java.services;
 
 import br.com.hotmart.java.controllers.forms.ProjectForm;
 import br.com.hotmart.java.controllers.vo.ProjectVO;
-import br.com.hotmart.java.entities.Employee;
 import br.com.hotmart.java.entities.Project;
 import br.com.hotmart.java.exception.ResourceNotFoundException;
 import br.com.hotmart.java.repositories.ProjectRepository;
@@ -63,5 +62,10 @@ public class ProjectService {
         existingProject.getEmployees().add(employeeService.findById(employeeId));
 
         return new ProjectVO(projectRepository.save(existingProject));
+    }
+
+    public List<ProjectVO> getAllProjectsFromEmployee(Long id) {
+        return projectRepository.findAllByEmployeesId(id).stream()
+                .map(ProjectVO::new).collect(Collectors.toList());
     }
 }
