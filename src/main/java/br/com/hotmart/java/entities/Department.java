@@ -5,7 +5,7 @@ import br.com.hotmart.java.controllers.forms.DepartmentForm;
 import lombok.*;
 
 import javax.persistence.*;
-
+import java.util.List;
 
 @Getter @Setter
 @AllArgsConstructor
@@ -26,15 +26,21 @@ public class Department {
 
     private String name;
 
+    private Integer budget;
+
     @Column(
             name = "department_number",
             nullable = false
     )
     private Integer number;
 
+    @OneToMany(mappedBy = "department")
+    private List<Project> projects;
+
     public Department(DepartmentForm form) {
         this.number = form.getNumber();
         this.name = form.getName();
+        this.budget = form.getBudget();
     }
 
     public void update(DepartmentForm form) {

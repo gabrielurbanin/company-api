@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,4 +16,8 @@ public class ProjectForm {
     private String name;
 
     private Long departmentId;
+
+    private Integer cost;
+
+    private LocalDate dueDate;
 }

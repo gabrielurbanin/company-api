@@ -21,6 +21,8 @@ public class ProjectVO {
 
     private String name;
 
+    private Integer cost;
+
     private DepartmentVO department;
 
     private List<Long> employeesId;
@@ -28,6 +30,7 @@ public class ProjectVO {
     public ProjectVO(Project project) {
         this.id = project.getId();
         this.name = project.getName();
+        this.cost = project.getCost();
 
         this.department = Optional.ofNullable(project.getDepartment())
                 .map(DepartmentVO::new).orElse(null);

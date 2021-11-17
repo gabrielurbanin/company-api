@@ -1,5 +1,6 @@
 package br.com.hotmart.java.controllers;
 
+import br.com.hotmart.java.controllers.forms.BudgetForm;
 import br.com.hotmart.java.controllers.forms.DepartmentForm;
 import br.com.hotmart.java.controllers.vo.DepartmentVO;
 import br.com.hotmart.java.controllers.vo.EmployeeVO;
@@ -42,9 +43,19 @@ public class DepartmentController {
         return ResponseEntity.ok().body(departmentService.getAllEmployees(id));
     }
 
+    @GetMapping("{id}/status")
+    public ResponseEntity<String> getBudgetStatus(@PathVariable Long id) {
+        return ResponseEntity.ok().body(departmentService.getBudgetStatus(id));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<DepartmentVO> update(@PathVariable Long id, @RequestBody DepartmentForm form) {
         return ResponseEntity.ok().body(departmentService.update(id, form));
+    }
+
+    @PatchMapping("/{id}/budget")
+    public ResponseEntity<DepartmentVO> addBudget(@PathVariable Long id, @RequestBody BudgetForm form) {
+        return ResponseEntity.ok().body(departmentService.addBudget(id, form));
     }
 
     @DeleteMapping("/{id}")
@@ -52,5 +63,4 @@ public class DepartmentController {
         departmentService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }
