@@ -35,6 +35,8 @@ public class Employee {
 
     private Integer gender;
 
+    private Integer salaryPerHour;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "adress_id",
@@ -59,6 +61,7 @@ public class Employee {
         this.name = form.getName();
         this.cpf = form.getCpf();
         this.gender = form.getGender();
+        this.salaryPerHour = form.getSalaryPerHour();
     }
 
     public void update(EmployeeForm form) {

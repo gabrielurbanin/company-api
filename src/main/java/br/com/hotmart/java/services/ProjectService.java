@@ -60,8 +60,22 @@ public class ProjectService {
 
     public ProjectVO addEmployee(Long id, Long employeeId) {
         Project existingProject = findById(id);
-        existingProject.getEmployees().add(employeeService.findById(employeeId));
+        Employee existingEmployee = employeeService.findById(employeeId);
+
+        Integer additionalCost = 8 * existingEmployee.getSalaryPerHour() * existingProject.getDurationInDays();
+
+        existingProject.addCost(additionalCost);
+        existingProject.getEmployees().add(existingEmployee);
 
         return new ProjectVO(projectRepository.save(existingProject));
+    }
+
+    public List<ProjectVO> getAllProjectsFromEmployee(Long id) {
+        return projectRepository.findAllByEmployeesId(id).stream()
+                .map(ProjectVO::new).collect(Collectors.toList());
+    }
+
+    public List<Project> getAllByDepartment(Long id) {
+        return projectRepository.findAllByDepartmentId(id);
     }
 }

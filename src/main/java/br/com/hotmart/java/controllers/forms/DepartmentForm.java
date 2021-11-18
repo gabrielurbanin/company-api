@@ -11,4 +11,6 @@ public class DepartmentForm {
     private String name;
 
     private Integer number;
+
+    private Integer budget;
 }

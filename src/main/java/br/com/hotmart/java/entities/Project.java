@@ -4,6 +4,8 @@ import br.com.hotmart.java.controllers.forms.ProjectForm;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 
@@ -19,6 +21,12 @@ public class Project {
     private Long id;
 
     private String name;
+
+    private Integer cost;
+
+    private LocalDate startDate = LocalDate.now();
+
+    private LocalDate dueDate;
 
     @ManyToOne
     @JoinColumn(
@@ -43,9 +51,19 @@ public class Project {
 
     public Project(ProjectForm form) {
         this.name = form.getName();
+        this.cost = form.getCost();
+        this.dueDate = form.getDueDate();
     }
 
     public void update(ProjectForm form) {
         this.name = form.getName();
+    }
+
+    public void addCost(Integer additionalCost) {
+        this.cost += additionalCost;
+    }
+
+    public Integer getDurationInDays() {
+        return Period.between(startDate, dueDate).getDays();
     }
 }

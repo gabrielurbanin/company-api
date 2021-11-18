@@ -1,4 +1,4 @@
-package br.com.hotmart.java.config;
+package br.com.hotmart.java.controllers;
 
 import br.com.hotmart.java.controllers.vo.ResourceNotFoundVO;
 import br.com.hotmart.java.exception.ResourceNotFoundException;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ResourceNotFoundHandler {
+public class GlobalExceptionHandler {
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ResourceNotFoundException.class)

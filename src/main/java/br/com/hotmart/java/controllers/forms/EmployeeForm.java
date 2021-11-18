@@ -20,4 +20,6 @@ public class EmployeeForm {
 
     private AddressForm addressForm;
 
+    private Integer salaryPerHour;
+
 }

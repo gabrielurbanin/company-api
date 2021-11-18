@@ -25,12 +25,10 @@ public class AddressController {
 
     @PostMapping
     public ResponseEntity<AddressVO> save(@RequestBody AddressForm form, UriComponentsBuilder uriBuilder) {
-
         AddressVO savedAddress = addressService.save(form);
         URI uri = uriBuilder.path("/departments/{id}").buildAndExpand(savedAddress.getId()).toUri();
 
         return ResponseEntity.created(uri).body(savedAddress);
-
     }
 
     @GetMapping("/{id}")
