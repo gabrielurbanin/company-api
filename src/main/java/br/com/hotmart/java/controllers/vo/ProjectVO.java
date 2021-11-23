@@ -1,16 +1,11 @@
 package br.com.hotmart.java.controllers.vo;
 
-import br.com.hotmart.java.entities.Employee;
 import br.com.hotmart.java.entities.Project;
+import com.google.j2objc.annotations.ObjectiveCName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -23,24 +18,27 @@ public class ProjectVO {
 
     private Integer cost;
 
-    private DepartmentVO department;
-
-    private List<Long> employeesId;
-
     public ProjectVO(Project project) {
         this.id = project.getId();
         this.name = project.getName();
         this.cost = project.getCost();
 
-        this.department = Optional.ofNullable(project.getDepartment())
-                .map(DepartmentVO::new).orElse(null);
+    }
 
-        if (project.getEmployees() == null)
-            this.employeesId = Collections.emptyList();
-        else {
-            this.employeesId =  project.getEmployees().stream()
-                    .map(Employee::getId).collect(Collectors.toList());
-        }
+    @Override
+    public boolean equals(Object toCompare) {
+        if (!(toCompare instanceof ProjectVO))
+            return false;
 
+        ProjectVO projectVO = (ProjectVO) toCompare;
+
+        if (id == projectVO.getId() && name == projectVO.getName() && cost == projectVO.getCost())
+            return true;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 5 + (id != null ? id.hashCode() : 0);
     }
 }
