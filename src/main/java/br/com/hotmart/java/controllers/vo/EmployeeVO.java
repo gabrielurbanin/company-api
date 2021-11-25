@@ -26,4 +26,21 @@ public class EmployeeVO {
         this.supervisor = Optional.ofNullable(employee.getSupervisor())
                 .map(SupervisorVO::new).orElse(null);
     }
+
+    @Override
+    public boolean equals(Object toCompare) {
+        if(!(toCompare instanceof EmployeeVO))
+            return false;
+
+        EmployeeVO employeeVO = (EmployeeVO) toCompare;
+
+        if (id == employeeVO.getId() && name == employeeVO.getName() && supervisor.equals(employeeVO.getSupervisor()))
+            return true;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 5 + (id != null ? id.hashCode() : 0);
+    }
 }

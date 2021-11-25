@@ -7,14 +7,31 @@ import br.com.hotmart.java.entities.Project;
 import com.google.common.collect.ImmutableList;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class ProjectBuilder {
 
     public static Project buildProject(String name) {
         Project project = buildBasicProject(name);
         project.setDepartment(prepareDepartment());
-        project.setEmployees(ImmutableList.of(prepareEmployee("name1", project), prepareEmployee("name2", project)));
+
+        List<Employee> employees = new ArrayList<>();
+        employees.add(prepareEmployee("name1", project));
+        employees.add(prepareEmployee("name2", project));
+
+        project.setEmployees(employees);
+
+        return project;
+    }
+
+    public static Project buildProjectWithCost(String name, Integer cost) {
+        Project project = buildBasicProject(name);
+        project.setCost(cost);
+        project.setDepartment(prepareDepartment());
+        project.setEmployees(List.of(prepareEmployee("name1", project), prepareEmployee("name2", project)));
 
         return project;
     }
@@ -50,7 +67,7 @@ public class ProjectBuilder {
         employee.setSalaryPerHour(10);
         employee.setAddress(prepareAddress());
         employee.setSupervisor(prepareSupervisor());
-        employee.setProjects(ImmutableList.of(project));
+        employee.setProjects(List.of(project));
         employee.setSubordinates(Collections.emptyList());
 
         return employee;
