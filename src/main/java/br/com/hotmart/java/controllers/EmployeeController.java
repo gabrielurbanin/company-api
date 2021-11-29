@@ -6,6 +6,7 @@ import br.com.hotmart.java.controllers.vo.ProjectVO;
 import br.com.hotmart.java.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -20,7 +21,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping
-    public ResponseEntity<List<EmployeeVO>> getAll(@RequestParam String name) {
+    public ResponseEntity<List<EmployeeVO>> getAll(@RequestParam @Nullable String name) {
         if (name != null) {
             return ResponseEntity.ok().body(employeeService.getAllByName(name));
         }

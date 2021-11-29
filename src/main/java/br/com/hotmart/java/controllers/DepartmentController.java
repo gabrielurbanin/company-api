@@ -6,6 +6,11 @@ import br.com.hotmart.java.controllers.vo.DepartmentVO;
 import br.com.hotmart.java.controllers.vo.EmployeeVO;
 import br.com.hotmart.java.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,11 +26,13 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @GetMapping
-    public ResponseEntity<List<DepartmentVO>> getAll() {
-        return ResponseEntity.ok().body(departmentService.getAll());
+    @Cacheable(value = "getAllDepartments")
+    public ResponseEntity<Page<DepartmentVO>> getAll(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok().body(departmentService.getAll(pageable));
     }
 
     @PostMapping
+    @CacheEvict(cacheNames = {"getAllDepartments"}, allEntries = true)
     public ResponseEntity<DepartmentVO> save(@RequestBody DepartmentForm form, UriComponentsBuilder uriBuilder) {
         DepartmentVO savedDepartment = departmentService.save(form);
         URI uri = uriBuilder.path("/departments/{id}").buildAndExpand(savedDepartment.getId()).toUri();
@@ -34,11 +41,13 @@ public class DepartmentController {
     }
 
     @GetMapping("/{id}")
+    @Cacheable(value = "getDepartmentById")
     public ResponseEntity<DepartmentVO> getById(@PathVariable Long id) {
         return ResponseEntity.ok().body(departmentService.getById(id));
     }
 
     @GetMapping("/{id}/employees")
+    @Cacheable(value = "getEmployeesFromDepartment")
     public ResponseEntity<List<EmployeeVO>> getAllEmployees(@PathVariable Long id) {
         return ResponseEntity.ok().body(departmentService.getAllEmployees(id));
     }
@@ -49,6 +58,7 @@ public class DepartmentController {
     }
 
     @PutMapping("/{id}")
+    @CacheEvict(cacheNames = {"getDepartmentById", "getAllDepartments", "getEmployeesFromDepartment"}, allEntries = true)
     public ResponseEntity<DepartmentVO> update(@PathVariable Long id, @RequestBody DepartmentForm form) {
         return ResponseEntity.ok().body(departmentService.update(id, form));
     }
@@ -59,6 +69,7 @@ public class DepartmentController {
     }
 
     @DeleteMapping("/{id}")
+    @CacheEvict(cacheNames = {"getDepartmentById", "getAllDepartments", "getEmployeesFromDepartment"}, allEntries = true)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         departmentService.delete(id);
         return ResponseEntity.noContent().build();

@@ -25,4 +25,21 @@ public class AddressVO {
         this.city = address.getCity();
         this.street = address.getStreet();
     }
+
+    @Override
+    public boolean equals(Object toCompare) {
+        if (!(toCompare instanceof AddressVO))
+            return false;
+
+        AddressVO addressVO = (AddressVO) toCompare;
+
+        if (id == addressVO.getId())
+            return true;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 5 + (id != null ? id.hashCode() : 0);
+    }
 }

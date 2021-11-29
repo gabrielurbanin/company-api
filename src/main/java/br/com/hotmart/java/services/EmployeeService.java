@@ -29,7 +29,6 @@ public class EmployeeService {
 
     public EmployeeVO save(EmployeeForm form) {
         Employee newEmployee = new Employee(form);
-
         newEmployee.setAddress(new Address(form.getAddressForm()));
 
         return new EmployeeVO(employeeRepository.save(newEmployee));

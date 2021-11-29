@@ -18,4 +18,21 @@ public class SupervisorVO {
         this.id = employee.getId();
         this.name = employee.getName();
     }
+
+    @Override
+    public boolean equals(Object toCompare) {
+        if (!(toCompare instanceof SupervisorVO))
+            return false;
+
+        SupervisorVO supervisorVO = (SupervisorVO) toCompare;
+
+        if(id == supervisorVO.getId() && name == supervisorVO.getName())
+            return true;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 5 + (id != null ? id.hashCode() : 0);
+    }
 }
