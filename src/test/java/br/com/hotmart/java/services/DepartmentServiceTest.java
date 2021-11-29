@@ -16,6 +16,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
@@ -55,24 +59,30 @@ public class DepartmentServiceTest {
     void whenGetAll_thenListProjectVO() {
         List<Department> departments = ImmutableList
                 .of(buildDepartment("department1"), buildDepartment("department2"));
-        when(departmentRepository.findAll())
-                .thenReturn(departments);
-        List<DepartmentVO> departmentVOS = departments.stream()
-                .map(DepartmentVO::new).collect(Collectors.toList());
 
-        List<DepartmentVO> response = departmentService.getAll();
+        Pageable pageable = PageRequest.of(0,2);
+        Page<Department> departmentsPage = new PageImpl<Department>(departments, pageable, departments.size());
 
-        assertArrayEquals(departmentVOS.toArray(), response.toArray());
+        when(departmentRepository.findAll(pageable))
+                .thenReturn(departmentsPage);
+
+        Page<DepartmentVO> departmentVOS = departmentsPage.map(DepartmentVO::new);
+
+        Page<DepartmentVO> response = departmentService.getAll(pageable);
+
+        assertArrayEquals(departmentVOS.stream().toArray(), response.stream().toArray());
     }
 
     @Test
     void whenGetAll_thenEmptyList() {
-        when(departmentRepository.findAll())
-                .thenReturn(Collections.emptyList());
+        Pageable pageable = PageRequest.of(0,2);
 
-        List<DepartmentVO> response = departmentService.getAll();
+        when(departmentRepository.findAll(pageable))
+                .thenReturn(Page.empty());
 
-        assertArrayEquals(Collections.emptyList().toArray(), response.toArray());
+        Page<DepartmentVO> response = departmentService.getAll(pageable);
+
+        assertArrayEquals(Page.empty().stream().toArray(), response.stream().toArray());
     }
 
     @Test

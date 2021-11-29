@@ -9,6 +9,9 @@ import br.com.hotmart.java.entities.Project;
 import br.com.hotmart.java.exception.ResourceNotFoundException;
 import br.com.hotmart.java.repositories.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,9 +30,8 @@ public class DepartmentService {
     @Autowired
     private ProjectService projectService;
 
-    public List<DepartmentVO> getAll() {
-        return departmentRepository.findAll().stream()
-                .map(DepartmentVO::new).collect(Collectors.toList());
+    public Page<DepartmentVO> getAll(Pageable pageable) {
+        return departmentRepository.findAll(pageable).map(DepartmentVO::new);
     }
 
     public DepartmentVO save(DepartmentForm form) {
